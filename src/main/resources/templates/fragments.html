@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <div class="list-group-item-wrapper" th:fragment="meeting_card(meetingInfo, index, tagIndex)" th:object="${meetingInfo}">
+        <div class="info_left">
+            <table class="meeting_info_table">
+                <tr>
+                    <td class="title"><span class="intro">会议号</span></td>
+                    <td><span th:text="${meetingInfo.id}"></span></td>
+                    <td class="title"><span class="intro">会议主题</span></td>
+                    <td><span th:text="${meetingInfo.subject}"></span></td>
+                    <td class="title"><span class="intro">地点</span></td>
+                    <td><span th:text="${meetingInfo.location}"></span></td>
+
+                </tr>
+                <tr>
+                    <td class="title"><span class="intro">发起人</span></td>
+                    <td><span th:id="|${index}_${tagIndex}|" th:text="${meetingInfo.organizerId}"></span></td>
+                    <script type="text/javascript">
+                        var [[|span_${index}_${tagIndex}|]] = $("#[[|${index}_${tagIndex}|]]");
+                        $.ajax({
+                            url: "/api/get_user_info",
+                            type: "POST",
+                            data: "id=" + [[|span_${index}_${tagIndex}|]].text(),
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.state == 200) {
+                                    [[|span_${index}_${tagIndex}|]].text(res.data.name);
+                                } else {
+                                    alert(res.message);
+                                }
+                            },
+                            error: function (xhr) {
+                                alert("出现未知错误! " + xhr.status);
+                            }
+                        });
+                    </script>
+                </tr>
+                <tr>
+                    <td class="title"><span class="intro">开始时间</span></td>
+                    <td colspan="3"><span th:text="${#dates.format(meetingInfo.startTime, 'yyyy/MM/dd HH:mm:ss')}"></span></td>
+                    <td class="title"><span class="intro">持续时间</span></td>
+                    <td colspan="3"><span th:text="${meetingInfo.duration+'秒'}"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="btn_wrapper">
+            <input class="btn" th:onclick="'javascript:get_meeting_info('+${meetingInfo.id}+')'" type="button" value="会议详情">
+        </div>
+
+    </div>
+</html>

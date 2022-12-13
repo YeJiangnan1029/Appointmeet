@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zju.apd.yjn.appointmeet.mapper.ParticipationMapper">
+
+    <resultMap id="MeetingEntityMapper" type="zju.apd.yjn.appointmeet.entity.Meeting">
+        <result column="organizer_id" property="organizerId"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="join_password" property="joinPassword"></result>
+    </resultMap>
+
+    <resultMap id="UserEntityMapper" type="zju.apd.yjn.appointmeet.entity.User">
+        <result column="create_date" property="createDate"></result>
+        <result column="last_login_date" property="lastLoginDate"></result>
+    </resultMap>
+
+    <insert id="addParticipationRecord">
+        INSERT INTO `participations`
+        (user_id, meeting_id, join_time)
+        VALUES
+            (#{userId}, #{meetingId}, #{joinTime})
+    </insert>
+
+    <delete id="deleteParticipationRecordByMeetingId">
+        DELETE FROM `participations`
+        WHERE `meeting_id` = #{meetingId}
+    </delete>
+
+    <select id="getNumOfParticipationByUserIdAndMeetingId" resultType="Integer">
+        SELECT count(*)
+        FROM `participations`
+        WHERE user_id = #{userId}
+        AND meeting_id = #{meetingId}
+    </select>
+
+    <delete id="deleteParticipationRecord">
+        DELETE FROM `participations`
+        WHERE `user_id` = #{userId}
+        AND `meeting_id` = #{meetingId}
+    </delete>
+
+
+    <select id="findParticipatedMeetingsByUserId" resultMap="MeetingEntityMapper">
+        SELECT `meetings`.id, `meetings`.`subject`,`meetings`.organizer_id, `meetings`.location, `meetings`.start_time, `meetings`.duration
+        FROM `meetings`
+        INNER JOIN `participations`
+        ON `meetings`.id = `participations`.meeting_id
+        WHERE `participations`.user_id = #{userId}
+        ORDER BY `meetings`.start_time
+    </select>
+
+    <select id="findParticipatorsByMeetingId" resultMap="UserEntityMapper">
+        SELECT `users`.id, `users`.`name`, `users`.avatar
+        FROM `users`
+        INNER JOIN `participations`
+        ON `users`.id = `participations`.user_id
+        WHERE `participations`.meeting_id = #{meetingId}
+        ORDER BY `participations`.join_time
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+  <html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="commonHeader">
+    <meta charset="UTF-8">
+    <title>Appointmeet website</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/base_frame.css">
+    <link rel="shortcut icon" href="/static/favicon/favicon.ico" type="image/vnd.microsoft.icon" />
+    <script crossorigin="anonymous" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="top_bar" class="container navbar-fixed-top" th:fragment="commonTopBar">
+        <div class="col-md-12">
+            <div id="top_bar_inner" class="row">
+              <div class="col-md-8">
+                <div class="page_head">
+                  <h2>Appointmeet</h2>
+                </div>
+              </div>
+              <div class="col-md-2 col-md-offset-2">
+                <div id="user_info_wrapper">
+                    <strong th:text="${userBriefInfo.name}">yjn</strong>
+                    <span>&nbsp;</span>
+                    <span class="text-muted" th:text="${userBriefInfo.email}">3190100625@zju.edu.cn</span>
+                    <img decoding="async" th:src="${(userBriefInfo.avatar==null)?'/upload/avatar/default.jpg':userBriefInfo.avatar}" class="img-circle user_avatar">
+                </div>
+
+              </div>
+            </div>
+          </div>
+      </div>
+    <div id="body_container">
+      <div id="side_nav" class="container" th:fragment="commonSideNav">
+        <ul class="nav nav-pills side_nav_list">
+          <li class="nav-header">
+            <span>个人中心</span>
+          </li>
+          <li class="active" ><a href="#" th:href="@{personal_info}">个人资料</a></li>
+          <li><a href="#" th:href="@{my_meetings}">我的会议</a></li>
+          <li><a href="#" th:href="@{create_meeting}">创建会议</a></li>
+          <li><a href="#" th:href="@{search_meeting}">搜索会议</a></li>
+          <li><a href="#" th:href="@{meeting_detail}">会议详情</a></li>
+          <li><a href="#" th:href="@{modify_info}">修改个人信息</a></li>
+        </ul>
+      </div>
+      <main class="content_layout">
+        <h1>Base frame</h1>
+      </main>
+    </div>
+
+
+
+  </body>
+  <footer th:fragment="commonFooter">
+    <script src="http://code.jquery.com/jquery-migrate-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  </footer>
+</html>

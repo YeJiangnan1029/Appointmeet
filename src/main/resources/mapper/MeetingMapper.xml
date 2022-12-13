@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zju.apd.yjn.appointmeet.mapper.MeetingMapper">
+
+    <resultMap id="MeetingEntityMapper" type="zju.apd.yjn.appointmeet.entity.Meeting">
+        <result column="organizer_id" property="organizerId"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="is_private" property="isPrivate"></result>
+        <result column="join_password" property="joinPassword"></result>
+    </resultMap>
+
+    <insert id="addMeeting" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `meetings`
+            (subject, detail, location, organizer_id, start_time, duration, is_private, join_password)
+        VALUES
+            (#{subject}, #{detail}, #{location}, #{organizerId}, #{startTime}, #{duration}, #{isPrivate}, #{joinPassword})
+    </insert>
+
+    <delete id="deleteMeeting">
+        DELETE FROM `meetings`
+        WHERE `meetings`.`id`= #{meetingId}
+    </delete>
+
+    <select id="findMeetingByMeetingId" resultMap="MeetingEntityMapper">
+        SELECT *
+        FROM `meetings`
+        WHERE id = #{id}
+    </select>
+
+    <select id="findMeetingsByOrganizerId" resultMap="MeetingEntityMapper">
+        SELECT id, subject, location, organizer_id, start_time, duration
+        FROM `meetings`
+        WHERE organizer_id = #{organizerId}
+    </select>
+
+
+
+</mapper>

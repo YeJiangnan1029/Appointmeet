@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="user_center::commonHeader"></head>
+<body>
+<div id="top_bar" class="container" th:replace="user_center::commonTopBar">
+</div>
+<div id="body_container">
+    <div id="side_nav" class="container">
+        <ul class="nav nav-pills side_nav_list">
+            <li class="nav-header">
+                <span>个人中心</span>
+            </li>
+            <li class="active"><a href="#" th:href="@{personal_info}">个人资料</a></li>
+            <li><a href="#" th:href="@{my_meetings}">我的会议</a></li>
+            <li><a href="#" th:href="@{create_meeting}">创建会议</a></li>
+            <li><a href="#" th:href="@{search_meeting}">搜索会议</a></li>
+            <li><a href="#" th:href="@{meeting_detail}">会议详情</a></li>
+            <li><a href="#" th:href="@{modify_info}">修改个人信息</a></li>
+        </ul>
+    </div>
+    <main class="content_layout">
+        <div class="page_title">
+            <h1>个人信息</h1>
+        </div>
+
+        <div th:if="${userDetailedInfo!=null}" class="page_content">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">用户ID</span>
+                    </div>
+                    <span th:text="${userDetailedInfo.id}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">用户名</span>
+                    </div>
+                    <span th:text="${userDetailedInfo.name}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">邮箱</span>
+                    </div>
+                    <span th:text="${userDetailedInfo.email}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">头像资源</span>
+                    </div>
+                    <span th:text="${userDetailedInfo.avatar}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">创建时间</span>
+                    </div>
+                    <span th:text="${#dates.format(userDetailedInfo.createDate, 'yyyy/MM/dd HH:mm:ss')}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">上次登录</span>
+                    </div>
+                    <span th:text="${#dates.format(userDetailedInfo.lastLoginDate, 'yyyy/MM/dd HH:mm:ss')}"></span>
+                </li>
+            </ul>
+            <input id="btn_modify_info" type="button" value="修改个人信息" class="btn">
+            <script type="text/javascript">
+                $("#btn_modify_info").click(function (){
+                    location.href="modify_info";
+                })
+            </script>
+        </div>
+        <div th:unless="${userDetailedInfo!=null}" class="page_content">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span>什么都没有呢</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>
+
+</body>
+<footer th:replace="user_center::commonFooter">
+</footer>
+</html>

@@ -1,0 +1,175 @@
+#top_bar{
+    width: 100%;
+    height: 50px;
+    padding: 0 100px;
+    border-bottom: lightgray solid 1px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+}
+
+#top_bar_inner{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+img.user_avatar{
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+}
+
+#user_avatar_to_modify{
+    width: 64px;
+    height: 64px;
+    margin-left: 10px;
+}
+
+.ipt_form_row{
+    margin-right: 30px;
+}
+
+#user_info_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#body_container{
+    padding-top: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+#body_container div.content_layout{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#body_container div.content_layout form.form_wrapper{
+    width: 80%;
+    text-align: center;
+}
+
+#body_container div.content_layout form.form_wrapper li.list-group-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#body_container div.content_layout form.form_wrapper li.list-group-item div.intro_wrapper{
+    width: 80px;
+    margin: 2px;
+    font-weight: bold;
+}
+
+#side_nav{
+    margin-left: 0;
+    width: 18vw;
+    height: 100%;
+    position: fixed;
+    background-color:rgb(248,249,253);
+    box-shadow: 2px 0 2px rgb(121, 144, 168);
+
+}
+
+#side_nav .nav-header{
+    height: 60px;
+    font-family: "Microsoft YaHei UI";
+    font-size: 24pt;
+    color: rgb(21, 72, 115);
+    border-bottom: 2px solid rgb(51,122,183);
+}
+
+ul.side_nav_list li{
+    width: 100%;
+    height: 40px;
+    margin: 10px 0;
+}
+
+main{
+    width: 82vw;
+    height: 90vh;
+    margin-left: 18vw;
+    /*background-color: bisque;*/
+
+}
+
+main.outer{
+    width: 100vw;
+    /*height: 90vh;*/
+    background-color: #f5f4f4;
+}
+
+div.outer_content_wrapper{
+    width: 100%;
+    height: 90vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*background-color: gold;*/
+}
+
+
+main.content_layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: center;*/
+}
+
+main.content_layout div.page_title{
+    width: 100%;
+    margin: 0 0 20px;
+    text-align: center;
+    /*background-color: gainsboro;*/
+}
+
+main.content_layout .page_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+main.content_layout ul.list-group {
+    width: 80%;
+}
+
+main.content_layout ul.list-group li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+main.content_layout span.intro{
+    font-weight: bold;
+}
+
+main.content_layout ul.list-group div.intro_wrapper{
+    width: 80px;
+    margin: 2px;
+}
+
+main.content_layout ul.list-group div.list-group-item-wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+main.content_layout ul.list-group div.list-group-item-wrapper div.info_left{
+    margin-right: auto;
+}
+
+.meeting_info_table td{
+    width: 90px;
+}
+
+.meeting_info_table td.title{
+    width: 65px;
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="user_center::commonHeader"></head>
+<body>
+<div id="top_bar" class="container" th:replace="user_center::commonTopBar">
+</div>
+<div id="body_container">
+    <div id="side_nav" class="container">
+        <ul class="nav nav-pills side_nav_list">
+            <li class="nav-header">
+                <span>个人中心</span>
+            </li>
+            <li ><a href="#" th:href="@{personal_info}">个人资料</a></li>
+            <li><a href="#" th:href="@{my_meetings}">我的会议</a></li>
+            <li><a href="#" th:href="@{create_meeting}">创建会议</a></li>
+            <li><a href="#" th:href="@{search_meeting}">搜索会议</a></li>
+            <li class="active"><a href="#" th:href="@{meeting_detail}">会议详情</a></li>
+            <li><a href="#" th:href="@{modify_info}">修改个人信息</a></li>
+        </ul>
+    </div>
+    <main class="content_layout">
+        <h1>会议详情</h1>
+        <div th:if="${meetingDetailedInfo != null}" class="page_content">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">会议ID</span>
+                    </div>
+                    <span th:text="${meetingDetailedInfo.id}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">会议主题</span>
+                    </div>
+                    <span th:text="${meetingDetailedInfo.subject}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">会议详情</span>
+                    </div>
+                    <span th:text="${(meetingDetailedInfo.detail==null)?'暂无':meetingDetailedInfo.detail}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">会议地点</span>
+                    </div>
+                    <span th:text="${(meetingDetailedInfo.location==null)?'暂无':meetingDetailedInfo.location}"></span>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">发起者</span>
+                    </div>
+                    <span id="organizerId" th:text="${meetingDetailedInfo.organizerId}"></span>
+                    <img id="organizerAvatar" decoding="async" src="/static/imgs/avatar/default.jpg" class="img-circle user_avatar">
+                    <script type="text/javascript">
+                        var organizerIdSpan = $("#organizerId");
+                        var organizerAvatarImg = document.getElementById("organizerAvatar");
+                        $.ajax({
+                            url: "/api/get_user_info",
+                            type: "POST",
+                            data: "id=" + organizerIdSpan.text(),
+                            dataType: "json",
+                            success: function (res) {
+                            if (res.state == 200) {
+                                organizerIdSpan.text(res.data.name);
+                                organizerAvatarImg.setAttribute("src", res.data.avatar);
+                            } else {
+                                alert(res.message);
+                            }
+                        },
+                        error: function (xhr) {
+                            alert("出现未知错误! " + xhr.status);
+                        }
+                        });
+                    </script>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">开始时间</span>
+                    </div>
+                    <span th:text="${#dates.format(meetingDetailedInfo.startTime, 'yyyy/MM/dd HH:mm:ss')}"></span>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">时长</span>
+                    </div>
+                    <span th:text="${meetingDetailedInfo.duration}"></span>
+                </li>
+                <li class="list-group-item">
+                    <input id="ipt_password" name="password" type="text" placeholder="请输入口令">
+                    <input class="btn" th:onclick="'javascript:join_meeting('+${meetingDetailedInfo.id}+')'" type="button" value="加入会议">
+                    <input class="btn" th:onclick="'javascript:quit_meeting('+${meetingDetailedInfo.id}+')'" type="button" value="退出会议">
+                </li>
+            </ul>
+
+        </div>
+        <div th:unless="${meetingDetailedInfo != null}" class="page_content">
+            <span style="margin: 40px auto;">还没有选择会议哦，快去搜索吧~</span>
+            <input class="btn" id="goto_search" type="button" value="前往搜索">
+            <script type="text/javascript">
+                $("#goto_search").click(function (){
+                    location.href = "search_meeting";
+                })
+            </script>
+        </div>
+
+    </main>
+</div>
+<script type="text/javascript">
+    function join_meeting(meeting_id){
+        // console.log(meeting_id);
+        let password = $(ipt_password).val();
+        $.ajax({
+            url: "/api/join_meeting",
+            type: "POST",
+            data: "password=" + password + "&meetingId=" + meeting_id,
+            dataType: "json",
+            success: function(res) {
+                if (res.state == 200){
+                    alert("加入会议成功");
+                    location.href = "my_meetings";
+                }
+                else {
+                    alert(res.message);
+                }
+            },
+            error: function(xhr) {
+                alert("出现未知错误! " + xhr.status);
+            }
+        });
+    }
+
+    function quit_meeting(meeting_id){
+        // console.log(meeting_id);
+        let password = $(ipt_password).val();
+        $.ajax({
+            url: "/api/quit_meeting",
+            type: "POST",
+            data: "meetingId=" + meeting_id,
+            dataType: "json",
+            success: function(res) {
+                if (res.state == 200){
+                    alert("退出会议成功");
+                    location.href = "my_meetings";
+                }
+                else {
+                    alert(res.message);
+                }
+            },
+            error: function(xhr) {
+                alert("出现未知错误! " + xhr.status);
+            }
+        });
+    }
+</script>
+
+</body>
+<footer th:replace="user_center::commonFooter">
+</footer>
+</html>

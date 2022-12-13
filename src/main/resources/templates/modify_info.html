@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="user_center::commonHeader"></head>
+<body>
+<div id="top_bar" class="container" th:replace="user_center::commonTopBar">
+</div>
+<div id="body_container">
+    <div id="side_nav" class="container">
+        <ul class="nav nav-pills side_nav_list">
+            <li class="nav-header">
+                <span>个人中心</span>
+            </li>
+            <li ><a href="#" th:href="@{personal_info}">个人资料</a></li>
+            <li><a href="#" th:href="@{my_meetings}">我的会议</a></li>
+            <li><a href="#" th:href="@{create_meeting}">创建会议</a></li>
+            <li><a href="#" th:href="@{search_meeting}">搜索会议</a></li>
+            <li><a href="#" th:href="@{meeting_detail}">会议详情</a></li>
+            <li class="active"><a href="#" th:href="@{modify_info}">修改个人信息</a></li>
+        </ul>
+    </div>
+    <main class="content_layout">
+        <h1>修改个人信息</h1>
+        <form action="#" role="form" id="user_info_form" class="page_content">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">用户头像</span>
+                    </div>
+                    <img style="margin-right: 100px;" id="user_avatar_to_modify" decoding="async" th:src="${userBriefInfo.avatar}==null?'/upload/avatar/default.jpg':${userBriefInfo.avatar}" class="img-rounded">
+                    <input id="select_avatar_file" type="file" name="avatarFile">
+                    <input class="btn" id="btn_upload_avatar" type="button" value="上传头像">
+                    <script type="text/javascript">
+                        $("#btn_upload_avatar").click(function() {
+                            $.ajax({
+                                url: "/api/modify_avatar",
+                                type: "POST",
+                                data: new FormData($("#user_info_form")[0]),
+                                processData: false,
+                                contentType: false,
+                                dataType: "json",
+                                success: function(res) {
+                                    if (res.state == 200){
+                                        alert("头像修改成功!");
+                                        location.href = "modify_info"
+                                    }
+                                    else {
+                                        alert(res.message);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    alert("注册时出现未知错误! " + xhr.status);
+                                }
+                            });
+                        });
+                    </script>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">用户名</span>
+                    </div>
+                    <input class="ipt_form_row" id="user_name" name="username" type="text" th:value="${userBriefInfo.name}" >
+                    <input class="btn" id="btn_modify_name" type="button" value="修改用户名">
+                    <script type="text/javascript">
+                        $("#btn_modify_name").click(function (){
+                            $.ajax({
+                                url: "/api/modify_user_name",
+                                type: "POST",
+                                data: $("#user_name").serialize(),
+                                dataType: "json",
+                                success: function(res) {
+                                    if (res.state == 200){
+                                        alert("修改成功!");
+                                        location.href = "modify_info";
+                                    }
+                                    else {
+                                        alert(res.message);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    alert("修改时出现未知错误! " + xhr.status);
+                                }
+                            });
+                        })
+                    </script>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">邮箱</span>
+                    </div>
+                    <input class="ipt_form_row" id="user_email" name="useremail" type="text" th:value="${userBriefInfo.email}" >
+                    <input class="btn" id="btn_modify_email" type="button" value="修改邮箱">
+                    <script type="text/javascript">
+                        $("#btn_modify_email").click(function (){
+                            let emailReg = /^[a-zA-Z0-9][a-zA-Z0-9_]+\@[a-zA-Z0-9]+\.[a-zA-Z]{2,5}(\.[a-zA-Z]{2,5})*$/i;
+                            let email = $("#user_email").val();
+                            if (!emailReg.test(email)){
+                                console.log(email);
+                                alert("邮箱格式不正确");
+                                return;
+                            }
+                            $.ajax({
+                                url: "/api/modify_user_email",
+                                type: "POST",
+                                data: $("#user_email").serialize(),
+                                dataType: "json",
+                                success: function(res) {
+                                    if (res.state == 200){
+                                        alert("修改成功!");
+                                        location.href = "modify_info";
+                                    }
+                                    else {
+                                        alert(res.message);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    alert("修改时出现未知错误! " + xhr.status);
+                                }
+                            });
+                        })
+                    </script>
+                </li>
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">原密码</span>
+                    </div>
+                    <input class="ipt_form_row" id="user_old_password" name="oldPassword" type="password">
+                    <div class="intro_wrapper">
+                        <span class="intro">新密码</span>
+                    </div>
+                    <input class="ipt_form_row" id="user_new_password" name="newPassword" type="password">
+                    <div class="intro_wrapper">
+                        <span class="intro">重复新密码</span>
+                    </div>
+                    <input class="ipt_form_row" id="user_password_confirm" type="password">
+                    <input class="btn" id="btn_modify_password" type="button" value="修改密码">
+                    <script type="text/javascript">
+                        $("#btn_modify_password").click(function (){
+                            let oldPassword = $("#user_old_password").val();
+                            let password = $("#user_new_password").val();
+                            let password_confirm = $("#user_password_confirm").val();
+                            if (password == ""){
+                                alert("新密码不能为空");
+                            }
+                            else if (password != password_confirm){
+                                alert("两次输入的密码不一致");
+                            }
+                            let post_data = `oldPassword=${oldPassword}&newPassword=${password}`;
+                            $.ajax({
+                                url: "/api/modify_user_password",
+                                type: "POST",
+                                data: post_data,
+                                dataType: "json",
+                                success: function(res) {
+                                    if (res.state == 200){
+                                        alert("修改成功!");
+                                        location.href = "modify_info";
+                                    }
+                                    else {
+                                        alert(res.message);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    alert("修改时出现未知错误! " + xhr.status);
+                                }
+                            });
+                        })
+                    </script>
+                </li>
+            </ul>
+        </form>
+    </main>
+</div>
+
+</body>
+<footer th:replace="user_center::commonFooter">
+</footer>
+</html>

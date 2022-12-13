@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="user_center::commonHeader"></head>
+<body>
+<div id="top_bar" class="container" th:replace="user_center::commonTopBar">
+</div>
+<div id="body_container">
+    <div id="side_nav" class="container">
+        <ul class="nav nav-pills side_nav_list">
+            <li class="nav-header">
+                <span>个人中心</span>
+            </li>
+            <li><a href="#" th:href="@{personal_info}">个人资料</a></li>
+            <li><a href="#" th:href="@{my_meetings}">我的会议</a></li>
+            <li><a href="#" th:href="@{create_meeting}">创建会议</a></li>
+            <li class="active"><a href="#" th:href="@{search_meeting}">搜索会议</a></li>
+            <li><a href="#" th:href="@{meeting_detail}">会议详情</a></li>
+            <li><a href="#" th:href="@{modify_info}">修改个人信息</a></li>
+        </ul>
+    </div>
+    <main class="content_layout">
+        <h1>搜索会议</h1>
+        <form id="search_form" role="form" class="page_content">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="intro_wrapper">
+                        <span class="intro">会议ID</span>
+                    </div>
+                    <input id="meeting_id" name="ids" type="text" >
+                </li>
+            </ul>
+            <div>
+                <input class="btn" id="btn_search" type="button" value="搜索">
+            </div>
+        </form>
+        <script type="text/javascript">
+            $("#btn_search").click(function() {
+                $.ajax({
+                    url: "/api/search_meeting",
+                    type: "POST",
+                    data: $("#search_form").serialize(),
+                    dataType: "json",
+                    success: function(res) {
+                        if (res.state == 200){
+                            location.href = "meeting_detail";
+                        }
+                        else {
+                            alert(res.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert("登录时出现未知错误! " + xhr.status);
+                    }
+                });
+            });
+        </script>
+    </main>
+</div>
+
+</body>
+<footer th:replace="user_center::commonFooter">
+</footer>
+</html>
